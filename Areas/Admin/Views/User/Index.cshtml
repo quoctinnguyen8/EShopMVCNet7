@@ -1,0 +1,37 @@
+﻿@model IEnumerable<AppUser>
+
+<div class="row">
+	<div class="col-12">
+		<a asp-action="Register" asp-controller="Account" asp-area="" class="btn btn-link">Đăng ký tài khoản</a>
+		<table class="table table-bordered table-hover mt-2">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Tên đăng nhập</th>
+					<th>Email</th>
+					<th>Vai trò</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>@item.Id</td>
+						<td>@item.Username</td>
+						<td>@item.Email</td>
+						<td>@(item.Role == UserRole.ADMIN ? "Admin" : "Khách")</td>
+						<td>
+							<a asp-action="Update" asp-route-id="@item.Id" class="btn btn-secondary">Sửa</a>
+							<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" onclick="return confirm('Chắc chưa?')">Xóa</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+
+		</table>
+
+		<partial name="_Pager" model="Model" />
+
+	</div>
+</div>

@@ -1,0 +1,70 @@
+﻿@{
+	ViewBag.Title = "Quản lý danh mục sản phẩm";
+}
+@section head{
+	<link href="~/lib/awesome-notifications/style.min.css" rel="stylesheet" />
+}
+@section scripts{
+	<script defer src="~/lib/alpinejs/cdn.min.js"></script>
+	<script src="~/lib/awesome-notifications/index.var.min.js"></script>
+	<script src="~/js/admin/category.js" asp-append-version="true"></script>
+}
+
+<div class="row" x-data="category">
+	<div class="col-12 mt-3">
+		<button class="btn btn-primary" x-on:click="openModalAdd()">Thêm danh mục</button>
+	</div>
+
+	<div class="col-12 mt-3">
+		<table class="table table-bordered">
+			<colgroup>
+				<col style="width: 10%" />
+				<col style="width: 75%" />
+				<col style="width: 15%" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Tên danh mục</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<template x-for="i in _list">
+					<tr>
+						<td x-text="i.id"></td>
+						<td x-text="i.name"></td>
+						<td>
+							<button class="btn btn-outline-secondary" x-on:click="openModalUpdate(i.id)">Sửa</button>
+							<button class="btn btn-outline-danger" x-on:click="removeCategory(i.id)">Xóa</button>
+						</td>
+					</tr>
+				</template>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="categoryUpdinModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" x-text="_modalSetting.title"></h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="mt-1">
+						<label class="form-label">Tên danh mục</label>
+						<input class="form-control" x-model="_updinData.name" />
+						<small x-text="_updinData.slug" class="fst-italic mt-2 d-block"></small>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+					<button type="button" class="btn btn-primary" x-text="_modalSetting.primaryButtonText" @@click="saveCategory()"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,58 @@
+﻿@model EShopMVCNet7.Models.AppUser
+
+@{
+	ViewData["Title"] = "Update";
+}
+@section scripts{
+	<partial name="_Validation" />
+}
+
+<h1>Update</h1>
+
+<h4>AppUser</h4>
+<hr />
+<div class="row">
+	<div class="col-md-6">
+		<form asp-action="Update" method="post">
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<div class="mt-3">
+				<label class="control-label">Tên đăng nhập</label>
+				<input class="form-control" disabled value="@Model.Username" />
+			</div>
+			<div class="mt-3">
+				<label class="control-label">
+					<input asp-for="Role" value="@UserRole.ADMIN" type="radio" />
+					Admin
+				</label>
+				<label class="control-label">
+					<input asp-for="Role" value="@UserRole.CUSTOMER" type="radio" />
+					Khách hàng
+				</label>
+				<span asp-validation-for="Role" class="text-danger"></span>
+			</div>
+			<div class="mt-3">
+				<label asp-for="Phone" class="control-label"></label>
+				<input asp-for="Phone" class="form-control" />
+				<span asp-validation-for="Phone" class="text-danger"></span>
+			</div>
+			<div class="mt-3">
+				<label asp-for="Address" class="control-label"></label>
+				<input asp-for="Address" class="form-control" />
+				<span asp-validation-for="Address" class="text-danger"></span>
+			</div>
+			<div class="mt-3">
+				<label asp-for="Email" class="control-label"></label>
+				<input asp-for="Email" class="form-control" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+			<div class="mt-3">
+				<input type="submit" value="Cập nhật tài khoản" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="mt-3">
+	<a asp-action="Index">Về trang danh sách</a>
+</div>
+
