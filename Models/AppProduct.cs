@@ -2,6 +2,10 @@
 {
 	public class AppProduct
 	{
+		public AppProduct()
+		{
+			ProductImages = new HashSet<AppProductImage>();
+		}
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Slug { get; set; }
@@ -20,5 +24,8 @@
 
 		// Một sản phẩm có 1 danh mục
 		public AppCategory Category { get; set; }
+
+		// Một sản phẩm có nhiều hình ảnh
+		public ICollection<AppProductImage> ProductImages { get; set; }
 	}
 }
