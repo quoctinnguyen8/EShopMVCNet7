@@ -13,8 +13,7 @@
 			_params += $"&{item.Key}={item.Value}";
 		}
 	}
-	string currentUrl = $"{Context.Request.Path.Value}"
-						+ $"?{_params}";
+	string currentUrl = $"{Context.Request.Path.Value}?{_params}";
 }
 <div class="my-4">
 	@Html.PagedListPager((IPagedList)Model,

@@ -56,15 +56,16 @@ namespace EShopMVCNet7.Models
 			modelBuilder.Entity<AppProduct>()
 						.HasOne(m => m.Category)			// Bảng AppProduct
 						.WithMany(m => m.Products)			// Bảng AppCategory
-						.HasForeignKey(m => m.CategoryId);	// Cột khóa ngoại
+						.HasForeignKey(m => m.CategoryId)   // Cột khóa ngoại
+						.OnDelete(DeleteBehavior.NoAction);
 
 			// Bảng AppProductImages
 			modelBuilder.Entity<AppProductImage>()
 						.Property(m => m.Path)
 						.HasMaxLength(300);
 			modelBuilder.Entity<AppProductImage>()
-						.HasOne(m => m.Product)				// Bảng AppProduct
-						.WithMany(m => m.ProductImages)		// Bảng AppProductImage
+						.HasOne(m => m.Product)             // Bảng AppProduct
+						.WithMany(m => m.ProductImages)     // Bảng AppProductImage
 						.HasForeignKey(m => m.ProductId);	// Cột khóa ngoại
 		}
 	}

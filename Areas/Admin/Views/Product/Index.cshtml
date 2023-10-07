@@ -5,65 +5,69 @@
 	ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="row">
+	<div class="col-md-12">
+		<h1>Danh sách sản phẩm</h1>
 
-<p>
-	<a asp-action="Create">Create New</a>
-</p>
-<table class="table table-bordered table-hover">
-	<thead>
-		<tr>
-			<th>Id</th>
-			<th>Tên sản phẩm</th>
-			<th>Hình ảnh</th>
-			<th>Tồn kho</th>
-			<th>Giá</th>
-			<th>L.xem</th>
-			<th>Danh mục</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>@item.Id</td>
-				<td>@item.Name</td>
-				<td class="text-center">
-					<img src="@item.CoverImg" style="width: 70px; height: 70px; object-fit: cover" class="rounded rounded-circle shadow" />
-				</td>
-				<td>@item.InStock</td>
-				<td>
-					@{
-						var isDiscount = false;
+		<div class="my-2">
+			<a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+		</div>
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Tên sản phẩm</th>
+					<th>Hình ảnh</th>
+					<th>Tồn kho</th>
+					<th>Giá</th>
+					<th>L.xem</th>
+					<th>Danh mục</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>@item.Id</td>
+						<td>@item.Name</td>
+						<td class="text-center">
+							<img src="@item.CoverImg" style="width: 70px; height: 70px; object-fit: cover" class="rounded rounded-circle shadow" />
+						</td>
+						<td>@item.InStock</td>
+						<td>
+							@{
+								var isDiscount = false;
 
-						if (item.DiscountPrice.HasValue)
-						{
-							var startDate = item.DiscountFrom ?? DateTime.MinValue;
-							var endDate = item.DiscountTo ?? DateTime.MaxValue;
-							isDiscount = startDate <= DateTime.Now && endDate >= DateTime.Now;
-						}
-					}
-					@if (isDiscount)
-					{
-						<s>@item.Price.ToString("#,#")</s>
-						<span class="d-block">@item.DiscountPrice?.ToString("#,#")</span>
-					}
-					else
-					{
-						<span>@item.Price.ToString("#,#")</span>
-					}
-				</td>
-				<td>@item.View</td>
-				<td>@item.CategoryName</td>
-				<td>
-					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+								if (item.DiscountPrice.HasValue)
+								{
+									var startDate = item.DiscountFrom ?? DateTime.MinValue;
+									var endDate = item.DiscountTo ?? DateTime.MaxValue;
+									isDiscount = startDate <= DateTime.Now && endDate >= DateTime.Now;
+								}
+							}
+							@if (isDiscount)
+							{
+								<s>@item.Price.ToString("#,#")</s>
+								<span class="d-block">@item.DiscountPrice?.ToString("#,#")</span>
+							}
+							else
+							{
+								<span>@item.Price.ToString("#,#")</span>
+							}
+						</td>
+						<td>@item.View</td>
+						<td>@item.CategoryName</td>
+						<td>
+							<a asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-info">Sửa</a>
+							<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"
+							   onclick="return confirm('Chắc chưa?')">Xóa</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
 
-<partial name="_Pager" model="Model" />
+		<partial name="_Pager" model="Model" />
+	</div>
+</div>
