@@ -1,10 +1,60 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
+}
+@using EShopMVCNet7.ViewModels.Home
+@model IEnumerable<ProductListItemVM>
+
+@section head{
+	<style>
+		.product-summary {
+			height: 88px;
+			overflow: hidden;
+			display: -webkit-box;
+			-webkit-line-clamp: 4;
+			-webkit-box-orient: vertical;
+		}
+
+		.product-name {
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+	</style>
 }
 
-<div class="text-center">
-	<h1 class="display-4">こんにちは。</h1>
-    <p>
-		<a asp-action="Index" asp-controller="Product" asp-area="Admin">これは管理者ページ（ＡｄｍｉｎＰａｇｅ）</a>
-    </p>
+<div class="row mt-4">
+	@foreach (var p in Model)
+	{
+		<div class="col-6 col-md-4 col-lg-3 my-2">
+			<div class="card">
+				<img src="@p.CoverImg" class="card-img-top" style="height: 250px; object-fit:cover">
+				<div class="card-body">
+					<h6 class="card-title product-name">@p.Name</h6>
+					<small class="badge bg-info">@p.CategoryName</small>
+					@{
+						var isDiscount = false;
+
+						if (p.DiscountPrice.HasValue)
+						{
+							var startDate = p.DiscountFrom ?? DateTime.MinValue;
+							var endDate = p.DiscountTo ?? DateTime.MaxValue;
+							isDiscount = startDate <= DateTime.Now && endDate >= DateTime.Now;
+						}
+					}
+					<p class="card-text">
+						@if (isDiscount)
+						{
+							<s class="badge bg-secondary">@p.Price.ToString("#,#")</s>
+							<span class="badge bg-success">@p.DiscountPrice?.ToString("#,#")</span>
+						}
+						else
+						{
+							<span class="badge bg-success">@p.Price.ToString("#,#")</span>
+						}
+					</p>
+					<p class="card-text small product-summary">@p.Summary</p>
+				</div>
+			</div>
+		</div>
+	}
 </div>

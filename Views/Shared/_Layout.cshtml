@@ -6,9 +6,11 @@
 	<title>@ViewData["Title"] - StudyRazorPage</title>
 	<link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
+	@RenderSection("head", false)
 </head>
 <body>
+
+	<partial name="_NavBar" />
 
 	<div class="container">
 		@RenderBody()

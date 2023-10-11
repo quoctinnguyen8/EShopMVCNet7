@@ -139,6 +139,80 @@ namespace EShopMVCNet7.Areas.Admin.Controllers
 			return View(data);
 		}
 
+		[HttpPost]
+		public IActionResult Update(int id, ProductUpdinVM productVM, [FromServices] IWebHostEnvironment env)
+		{
+			ModelState.Remove("CoverImg");
+			ModelState.Remove("ProductImages");
+			// xác thực dữ liệu
+			if (ModelState.IsValid == false)
+			{
+				return View(productVM);
+			}
+
+			var oldProduct = _db.AppProducts.Find(id);
+			if (oldProduct == null)
+			{
+				SetErrorMesg("Không tìm thấy sản phẩm");
+				return RedirectToAction(nameof(Index));
+			}
+
+			// Copy dữ liệu từ view model sang model
+			oldProduct.Name = productVM.Name;
+			oldProduct.Slug = productVM.Slug;
+			oldProduct.Summary = productVM.Summary;
+			oldProduct.Content = productVM.Content;
+			oldProduct.InStock = productVM.InStock;
+			oldProduct.Price = productVM.Price;
+			oldProduct.DiscountPrice = productVM.DiscountPrice;
+			oldProduct.DiscountFrom = productVM.DiscountFrom;
+			oldProduct.DiscountTo = productVM.DiscountTo;
+			oldProduct.CategoryId = productVM.CategoryId;
+
+			// upload ảnh bìa (CoverImg)
+			if (productVM.CoverImg is not null)
+			{
+				// Xóa ảnh bìa cũ
+				System.IO.File.Delete(env.WebRootPath + oldProduct.CoverImg);
+				// Update ảnh bìa mới
+				oldProduct.CoverImg = UploadFile(productVM.CoverImg, env.WebRootPath);
+			}
+
+			if (productVM.ProductImages is not null)
+			{
+				// Xóa ảnh sản phẩm trong db
+				var pImgs = _db.AppProductImages.Where(i=>i.ProductId == id).ToList();
+				// Xóa file
+				foreach ( var img in pImgs)
+				{
+					System.IO.File.Delete(env.WebRootPath + img.Path);
+				}
+				_db.RemoveRange(pImgs);
+
+				// Upload ảnh sản phẩm (nhiều ảnh)
+				foreach (var img in productVM.ProductImages)
+				{
+					if (img is not null)
+					{
+						// Tạo model cho ảnh sản phẩm và thêm vào cùng lúc với sản phẩm
+						var productImg = new AppProductImage();
+						productImg.Path = UploadFile(img, env.WebRootPath);
+						oldProduct.ProductImages.Add(productImg);
+					}
+				}
+			}
+
+			try
+			{
+				_db.SaveChanges();
+				SetSuccessMesg("Cập nhật thông tin sản phẩm thành công");
+			}
+			catch (Exception ex)
+			{
+				SetErrorMesg("Đã xảy ra lỗi trong quá trình xử lý. Chi tiết: " + ex.Message);
+			}
+			return RedirectToAction(nameof(Index));
+		}
 
 		public IActionResult Delete(int id, [FromServices] IWebHostEnvironment env)
 		{
