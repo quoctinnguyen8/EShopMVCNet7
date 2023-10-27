@@ -1,0 +1,59 @@
+﻿@using EShopMVCNet7.ViewModels.Cart
+@model IEnumerable<CartListItemVM>
+
+
+@if (Model == null || Model.Any() == false)
+{
+	<h2 class="display-5 text-center">Giỏ hàng rỗng!</h2>
+	return;
+}
+
+<div class="row">
+	<div class="col-12">
+		<h2 class="display-5 text-center">Giỏ hàng</h2>
+		<table class="table table-bordered table-hover">
+			<colgroup>
+				<col style="width: 15%" />
+				<col style="width: 55%" />
+				<col style="width: 10%" />
+				<col style="width: 5%" />
+				<col style="width: 10%" />
+				<col style="width: 5%" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th>Ảnh</th>
+					<th>Tên sản phẩm</th>
+					<th>Đơn giá</th>
+					<th>SL</th>
+					<th>Thành tiền</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td class="text-center">
+							<img src="@item.CoverImg" class="rounded-circle shadow"
+								 style="width: 70px; height: 70px; object-fit:cover" />
+						</td>
+						<td>@item.Name</td>
+						<td>@item.FinalPrice.ToString("#,# đ")</td>
+						<td>@item.QuantityInCart</td>
+						<td>@((item.QuantityInCart * item.FinalPrice).ToString("#,# đ"))</td>
+						<td class="text-center" style="vertical-align: middle">
+							<a class="btn btn-danger" asp-action="RemoveProduct" asp-route-productId="@item.Id">&times;</a>
+						</td>
+					</tr>
+				}
+				<tr>
+					<td colspan="2" class="display-6 fw-bold text-end">Tổng tiền</td>
+					<td colspan="4" class="display-6 fw-bold">
+						@Model.Sum(x => x.QuantityInCart * x.FinalPrice).ToString("#,# đ")
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

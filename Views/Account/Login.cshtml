@@ -1,0 +1,30 @@
+﻿@model EShopMVCNet7.ViewModels.Account.LoginVM
+
+@{
+	ViewData["Title"] = "Login";
+}
+@section scripts{ 
+	<partial name="_Validation" />
+}
+
+<div class="row">
+	<div class="col-md-4 mx-auto mt-4">
+		<h6 class="display-6 text-center">Đăng nhập</h6>
+		<form asp-action="Login" method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="mt-3">
+				<label asp-for="Username" class="control-label"></label>
+				<input asp-for="Username" class="form-control" />
+				<span asp-validation-for="Username" class="text-danger"></span>
+			</div>
+			<div class="mt-3">
+				<label asp-for="Password" class="control-label"></label>
+				<input asp-for="Password" class="form-control" type="password" />
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+			<div class="mt-3">
+				<input type="submit" value="Đăng nhập" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
