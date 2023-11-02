@@ -8,5 +8,7 @@
 		public string ProductName { get; set; }
 		public double? Price { get; set; }// Giá sản phẩm tại thời điểm mua hàng
 		public int? Quantity { get; set; }// Số lượng
+
+		public AppOrder AppOrder { get; set; }
 	}
 }

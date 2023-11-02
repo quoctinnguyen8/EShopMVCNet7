@@ -1,6 +1,9 @@
 ﻿@using EShopMVCNet7.ViewModels.Cart
 @model IEnumerable<CartListItemVM>
 
+@section scripts{ 
+	<partial name="_Validation" />
+}
 
 @if (Model == null || Model.Any() == false)
 {
@@ -9,8 +12,11 @@
 }
 
 <div class="row">
-	<div class="col-12">
-		<h2 class="display-5 text-center">Giỏ hàng</h2>
+	<h2 class="display-5 text-center">Giỏ hàng</h2>
+	<div class="col-4">
+		<partial name="_CustomerInfo" model="null" />
+	</div>
+	<div class="col-8">
 		<table class="table table-bordered table-hover">
 			<colgroup>
 				<col style="width: 15%" />
@@ -48,8 +54,8 @@
 					</tr>
 				}
 				<tr>
-					<td colspan="2" class="display-6 fw-bold text-end">Tổng tiền</td>
-					<td colspan="4" class="display-6 fw-bold">
+					<td colspan="2" class="display-6 text-end">Tổng tiền</td>
+					<td colspan="4" class="display-6">
 						@Model.Sum(x => x.QuantityInCart * x.FinalPrice).ToString("#,# đ")
 					</td>
 				</tr>
